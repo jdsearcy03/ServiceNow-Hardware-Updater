@@ -8,53 +8,12 @@ function Get-SNAMInfo {
         [String]$ComputerName,
         [String]$SerialNumber,
         [Switch]$Swap,
-        [Switch]$Inventory
+        [Switch]$Inventory,
+        [String]$creds,
+        [String]$instance_name
     )
 
     Begin {
-        $creds = Get-Credential -Message "Enter your ServiceNow REST API credentials."
-
-        Add-Type -AssemblyName System.Windows.Forms
-        Add-Type -AssemblyName System.Drawing
-
-        $domain_form = New-Object System.Windows.Forms.Form
-        $domain_form.Size = New-Object System.Drawing.Size(301,128)
-        $domain_form.Text = "Instance Name"
-        $domain_form.StartPosition = 'CenterScreen'
-        $domain_form.TopMost = $true
-
-        $header_label = New-Object System.Windows.Forms.Label
-        $header_label.Text = "Enter your ServiceNow Instance Name:"
-        $header_label.Location = New-Object System.Drawing.Point(5,8)
-        $header_label.AutoSize = $true
-        $domain_form.Controls.Add($header_label)
-
-        $domain_box = New-Object System.Windows.Forms.TextBox
-        $domain_box.Location = New-Object System.Drawing.Point(5,30)
-        $domain_box.Size = New-Object System.Drawing.Size(180,20)
-        $domain_box.TextAlign = 'Right'
-        $domain_form.Controls.Add($domain_box)
-
-        $domain_label = New-Object System.Windows.Forms.Label
-        $domain_label.Text = ".service-now.com/"
-        $domain_label.Location = New-Object System.Drawing.Point(184,34)
-        $domain_label.AutoSize = $true
-        $domain_form.Controls.Add($domain_label)
-
-        $OKButton = New-Object System.Windows.Forms.Button
-        $OKButton.Location = New-Object System.Drawing.Point(103,60)
-        $OKButton.Size = New-Object System.Drawing.Size(75,23)
-        $OKButton.Text = "OK"
-        $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-        $domain_form.Controls.Add($OKButton)
-        $domain_form.AcceptButton = $OKButton
-
-        $domain_result = $domain_form.ShowDialog()
-        If ($domain_result -eq [System.Windows.Forms.DialogResult]::OK) {
-            $instance_name = $domain_box.Text
-            $instance_name = "$($instance_name).service-now.com"
-        }
-
         $global:consumables_ids = New-Object System.Collections.ArrayList
         $global:consumables_list = New-Object System.Collections.ArrayList
         If (-not($SerialNumber)) {
@@ -3150,7 +3109,9 @@ function Edit-SNAMLocation {
 
     Param (
         [String]$ComputerName,
-        [String]$SerialNumber
+        [String]$SerialNumber,
+        [String]$creds,
+        [String]$instance_name
     )
 
     Begin {
@@ -3615,7 +3576,9 @@ function Update-SNAMInfo {
         [String]$ComputerName,
         [String]$SerialNumber,
         [Switch]$Swap,
-        [Switch]$Inventory
+        [Switch]$Inventory,
+        [String]$creds,
+        [String]$instance_name
     )
 
     Begin {
@@ -5129,6 +5092,51 @@ $($($other_entries_serials | Out-String).Trim())
     }
 }
 
+#Get ServiceNow API Credentials
+$creds = Get-Credential -Message "Enter your ServiceNow REST API credentials."
+
+#Get ServiceNow Instance Name
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$domain_form = New-Object System.Windows.Forms.Form
+$domain_form.Size = New-Object System.Drawing.Size(301,128)
+$domain_form.Text = "Instance Name"
+$domain_form.StartPosition = 'CenterScreen'
+$domain_form.TopMost = $true
+
+$header_label = New-Object System.Windows.Forms.Label
+$header_label.Text = "Enter your ServiceNow Instance Name:"
+$header_label.Location = New-Object System.Drawing.Point(5,8)
+$header_label.AutoSize = $true
+$domain_form.Controls.Add($header_label)
+
+$domain_box = New-Object System.Windows.Forms.TextBox
+$domain_box.Location = New-Object System.Drawing.Point(5,30)
+$domain_box.Size = New-Object System.Drawing.Size(180,20)
+$domain_box.TextAlign = 'Right'
+$domain_form.Controls.Add($domain_box)
+
+$domain_label = New-Object System.Windows.Forms.Label
+$domain_label.Text = ".service-now.com/"
+$domain_label.Location = New-Object System.Drawing.Point(184,34)
+$domain_label.AutoSize = $true
+$domain_form.Controls.Add($domain_label)
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(103,60)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = "OK"
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$domain_form.Controls.Add($OKButton)
+$domain_form.AcceptButton = $OKButton
+
+$domain_result = $domain_form.ShowDialog()
+If ($domain_result -eq [System.Windows.Forms.DialogResult]::OK) {
+    $instance_name = $domain_box.Text
+    $instance_name = "$($instance_name).service-now.com"
+}
+
 $try = "Yes"
 $message = "good"
 While ($try -eq "Yes") {
@@ -5207,11 +5215,11 @@ While ($try -eq "Yes") {
         }else{
             $try = "No"
             If ($SerialNumber -notmatch '\w') {
-                Get-SNAMInfo -ComputerName $ComputerName
-                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber
+                Get-SNAMInfo -ComputerName $ComputerName -creds $creds -instance_name $instance_name
+                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
             }else{
-                Get-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber
-                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber
+                Get-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
+                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
             }
             $try = "Yes"
         }
