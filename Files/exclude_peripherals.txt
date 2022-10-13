@@ -1,0 +1,26 @@
+Apple iPhone
+Apple Mobile Device USB Composite Device
+Bluetooth Device (Personal Area Network)
+Bluetooth Device (RFCOMM Protocol TDI)
+Generic USB Hub
+HID-compliant consumer control device
+HID-compliant device
+HID-compliant mouse
+HID-compliant system controller
+HID-compliant touch screen
+HID-compliant vendor-defined device
+HID Keyboard Device
+Integrated Camera
+Integrated IR Camera
+Intel(R) Wireless Bluetooth(R)
+Lenovo Optical Mouse (HID)
+Microphone (Live! Cam Chat HD VF0790)
+Microsoft Bluetooth Enumerator
+Microsoft Bluetooth LE Enumerator
+USB Composite Device
+USB Input Device
+USB Printing Support
+USB Root Hub
+USB Root Hub (USB 3.0)
+USB Serial Converter
+USB Serial Port (COM4)
