@@ -5136,60 +5136,62 @@ While ($try -eq "Yes") {
     Add-Type -AssemblyName System.Drawing
 
     $create_form = New-Object System.Windows.Forms.Form
-    $create_form.Text = "Inventory Project Tool"
-    $create_form.Size = New-Object System.Drawing.Size(377,180)
+    $create_form.Text = "SNAM Swap Updates Tool"
+    $create_form.Size = New-Object System.Drawing.Size(387,210)
     $create_form.StartPosition = 'CenterScreen'
             
     $error_label = New-Object System.Windows.Forms.Label
     $error_label.Location = New-Object System.Drawing.Point(5,12)
     $error_label.AutoSize = $true
-    If ($message -eq "good") {
-        $error_label.Text = "Enter Computer Name and Serial Number:"
-    }else{
-        If ($message -eq "error") {
-            $error_label.Text = "No Computer Name entered. Please enter a Computer Name."
-            $error_label.ForeColor = "red"
-        }else{
-            $error_label.Text = "$ComputerName is Offline. Please try a different Computer Name."
-            $error_label.ForeColor = "red"
-        }
+    $error_label.Text = "Enter Computer Name, Old Serial Number, and New Serial Number:"
+    If ($message -eq "error") {
+        $error_label.ForeColor = "red"
     }
     $create_form.Controls.Add($error_label)
 
     $Name_label = New-Object System.Windows.Forms.Label
-    $Name_label.Location = New-Object System.Drawing.Point(5,45)
+    $Name_label.Location = New-Object System.Drawing.Point(19,45)
     $Name_label.AutoSize = $true
     $Name_label.Text = "Computer Name:"
     $create_form.Controls.Add($Name_label)
 
     $Serial_label = New-Object System.Windows.Forms.Label
-    $Serial_label.Location = New-Object System.Drawing.Point(14,75)
+    $Serial_label.Location = New-Object System.Drawing.Point(8,75)
     $Serial_label.AutoSize = $true
-    $Serial_label.Text = "Serial Number:"
+    $Serial_label.Text = "Old Serial Number:"
     $create_form.Controls.Add($Serial_label)
 
+    $new_Serial_label = New-Object System.Windows.Forms.Label
+    $new_Serial_label.Location = New-Object System.Drawing.Point(5,105)
+    $new_Serial_label.AutoSize = $true
+    $new_Serial_label.Text = "New Serial Number:"
+    $create_form.Controls.Add($new_Serial_label)
+
     $verify_Name_box = New-Object System.Windows.Forms.TextBox
-    $verify_Name_box.Location = New-Object System.Drawing.Point($($Name_label.Location.X + $Name_label.Size.Width),$($Name_label.Location.Y - 1))
+    $verify_Name_box.Location = New-Object System.Drawing.Point($($new_Serial_label.Location.X + $new_Serial_label.Size.Width),$($Name_label.Location.Y - 1))
     $verify_Name_box.Size = New-Object System.Drawing.Size(255,25)
-    $verify_Name_box.Text = $ComputerName
     $create_form.Controls.Add($verify_Name_box)
 
     $verify_Serial_box = New-Object System.Windows.Forms.TextBox
-    $verify_Serial_box.Location = New-Object System.Drawing.Point($($Name_label.Location.X + $Name_label.Size.Width),$($Serial_label.Location.Y - 1))
+    $verify_Serial_box.Location = New-Object System.Drawing.Point($($new_Serial_label.Location.X + $new_Serial_label.Size.Width),$($Serial_label.Location.Y - 1))
     $verify_Serial_box.Size = New-Object System.Drawing.Size(255,25)
-    $verify_Serial_box.Text = $SerialNumber
     $create_form.Controls.Add($verify_Serial_box)
 
+    $new_Serial_box = New-Object System.Windows.Forms.TextBox
+    $new_Serial_box.Location = New-Object System.Drawing.Point($($new_Serial_label.Location.X + $new_Serial_label.Size.Width),$($new_Serial_label.Location.Y - 1))
+    $new_Serial_box.Size = New-Object System.Drawing.Size(255,25)
+    $create_form.Controls.Add($new_Serial_box)
+
     $OKButton = New-Object System.Windows.Forms.Button
-    $OKButton.Location = New-Object System.Drawing.Point(160,110)
+    $OKButton.Location = New-Object System.Drawing.Point(172,140)
     $OKButton.Size = New-Object System.Drawing.Size(95,23)
     $OKButton.Text = "Search"
     $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-    $create_form.AcceptButton = $OKButton
     $create_form.Controls.Add($OKButton)
+    $create_form.AcceptButton = $OKButton
 
     $CancelButton = New-Object System.Windows.Forms.Button
-    $CancelButton.Location = New-Object System.Drawing.Point(256,110)
+    $CancelButton.Location = New-Object System.Drawing.Point(270,140)
     $CancelButton.Size = New-Object System.Drawing.Size(95,23)
     $CancelButton.Text = "Exit"
     $CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
@@ -5199,20 +5201,13 @@ While ($try -eq "Yes") {
 
     If ($search_result -eq [System.Windows.Forms.DialogResult]::OK) {
         $ComputerName = $verify_Name_box.Text
-        $SerialNumber = $verify_Serial_box.Text
-        If ($ComputerName -notmatch '\w') {
-            $try = "Yes"
+        $OldSerialNumber = $verify_Serial_box.Text
+        $NewSerialNumber = $new_Serial_box.Text
+        If ($ComputerName -notmatch '\w' -or $OldSerialNumber -notmatch '\w' -or $NewSerialNumber -notmatch '\w') {
             $message = "error"
         }else{
-            $try = "No"
-            If ($SerialNumber -notmatch '\w') {
-                Get-SNAMInfo -ComputerName $ComputerName -creds $creds -instance_name $instance_name
-                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
-            }else{
-                Get-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
-                Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $SerialNumber -creds $creds -instance_name $instance_name
-            }
-            $try = "Yes"
+            Get-SNAMInfo -ComputerName $ComputerName -SerialNumber $OldSerialNumber -Swap
+            Update-SNAMInfo -ComputerName $ComputerName -SerialNumber $NewSerialNumber -Swap
         }
     }
     If ($search_result -eq [System.Windows.Forms.DialogResult]::Cancel) {
