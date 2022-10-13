@@ -79,7 +79,7 @@ function Get-SNAMInfo {
         }else{
             $ScriptUser = "$($ScriptUser.GivenName) $($ScriptUser.Surname)"
         }
-        $SNAM_Path = "C:\Users\$UserName\Desktop\SNAM Updates.csv"
+        $SNAM_Path = "$PSScriptRoot\Files\SNAM Updates.csv"
         #ServiceNow API GET Variables
         $user = $creds.UserName
         $pass = $creds.GetNetworkCredential().Password
@@ -131,7 +131,7 @@ function Get-SNAMInfo {
                 If ($comp_ci_id -notmatch '\w') {
                     $po_number = $comp_hw_response.po_number
                     #Add Entry to Error Document
-                $SNAM_Error_Path = "\\wnis01\ftp$\Tools\Resources\SNAM Records\SNAM Errors.csv"
+                $SNAM_Error_Path = "$PSScriptRoot\Files\SNAM Errors.csv"
                 $error.Clear()
                 $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
                 If ($error) {
@@ -571,7 +571,7 @@ function Get-SNAMInfo {
                             $recent_entry.po = $entry[$i].po
                         }
                         #Add Duplicate Entry to Errors Log
-                        $SNAM_Error_Path = "\\wnis01\ftp$\Tools\Resources\SNAM Records\SNAM Errors.csv"
+                        $SNAM_Error_Path = "$PSScriptRoot\Files\SNAM Errors.csv"
                         $error.Clear()
                         $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
                         If ($error) {
@@ -896,7 +896,7 @@ function Get-SNAMInfo {
         $recent_form.StartPosition = 'CenterScreen'
 
         $font_bold = New-Object System.Drawing.Font("Microsoft Sans Serif",8.25,[System.Drawing.FontStyle]::Bold)
-        $image = [System.Drawing.Image]::FromFile("\\wnis01\ftp$\Tools\Resources\SNAM Records\search_icon.jpeg")
+        $image = [System.Drawing.Image]::FromFile("$PSScriptRoot\Files\search_icon.jpeg")
 
         #Header Labels
         $infolabel1 = New-Object System.Windows.Forms.Label
@@ -3115,7 +3115,7 @@ function Edit-SNAMLocation {
     )
 
     Begin {
-        $date_path = '\\wnis01\ftp$\Tools\Resources\SNAM date.txt'
+        $date_path = '$PSScriptRoot\Files\SNAM date.txt'
         if (-not($SerialNumber)) {
             If (Test-Connection $ComputerName -Count 1 -Quiet) {
                 $SerialNumber = (Get-WmiObject Win32_BIOS -ComputerName $ComputerName).SerialNumber
@@ -3261,8 +3261,8 @@ function Edit-SNAMLocation {
             }
 
             $box_count = $count
-            Get-Date -Format "yyyy-MM-dd HH:mm:ss" | Out-File -FilePath '\\wnis01\ftp$\Tools\Resources\SNAM date.txt'
-            $box_count | Out-File -FilePath '\\wnis01\ftp$\Tools\Resources\SNAM date.txt' -Append
+            Get-Date -Format "yyyy-MM-dd HH:mm:ss" | Out-File -FilePath '$PSScriptRoot\Files\SNAM date.txt'
+            $box_count | Out-File -FilePath '$PSScriptRoot\Files\SNAM date.txt' -Append
         }else{
             [int]$box_count = (Get-Content -Path $date_path)[1]
         }
@@ -3446,8 +3446,8 @@ function Get-Peripherals{
         [Parameter(mandatory=$true,ValueFromPipeline=$true)]
         [Alias(“HostName”)]
         [String]$ComputerName,
-        [String]$filterpath = "\\WNIS01\ftp$\Tools\Resources\exclude_peripherals.txt",
-        [String]$peripheralswaplistpath = "\\WNIS01\ftp$\Tools\Resources\peripheralswaplist.csv",
+        [String]$filterpath = "$PSScriptRoot\Files\exclude_peripherals.txt",
+        [String]$peripheralswaplistpath = "$PSScriptRoot\Files\peripheralswaplist.csv",
         [String]$sigpad = 'USB\VID_0403&PID_6001\TOPAZBSB',
         [String]$BadgeReader1 = 'HID\VID_0C27&PID_3BFA',
         [String]$BadgeReader2 = 'USB\VID_0C27&PID_3BFA'
@@ -3646,7 +3646,7 @@ function Update-SNAMInfo {
         }
     #Import SNAM Updates
         $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
-        $SNAM_Path = "C:\Users\$UserName\Desktop\SNAM Updates.csv"
+        $SNAM_Path = "$PSScriptRoot\Files\SNAM Updates.csv"
         If (-not($ComputerName)) {
             $Updates = Import-Csv -Path $SNAM_Path | Where-Object {$_."Serial Number" -eq $SerialNumber}
         }else{
@@ -4038,7 +4038,7 @@ function Update-SNAMInfo {
                     $other_entry = $($entry.SysID)[$i-1]
                     $other_entries += $($entry.serial_number)[$i-1]
                     #Add Duplicate Entry to Errors Log
-                    $SNAM_Error_Path = "\\wnis01\ftp$\Tools\Resources\SNAM Records\SNAM Errors.csv"
+                    $SNAM_Error_Path = "$PSScriptRoot\Files\SNAM Errors.csv"
                     $error.Clear()
                     $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
                     If ($error) {
@@ -4079,7 +4079,7 @@ function Update-SNAMInfo {
                         $other_entry = $($entry.SysID)[$i-1]
                         $other_entries += $($entry.serial_number)[$i-1]
                         #Add Duplicate Entry to Errors Log
-                        $SNAM_Error_Path = "\\wnis01\ftp$\Tools\Resources\SNAM Records\SNAM Errors.csv"
+                        $SNAM_Error_Path = "$PSScriptRoot\Files\SNAM Errors.csv"
                         $error.Clear()
                         $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
                         If ($error) {
@@ -4289,15 +4289,6 @@ function Update-SNAMInfo {
             $body_1 = '{"name":"'
             $body = "$body_1$NewName$body_2"
             $name_patch = Invoke-RestMethod -Headers $headers -Method $method -Uri $uri -Body $body
-        }
-        #Change Backup Folder
-        If ($Updates.'New Computer Name' -match '\w' -and $Updates.'New Computer Name' -ne $ComputerName -and $Swap) {
-            Rename-Item -Path "\\wnis01\g$\BACKUP\$($Updates.'Computer Name')" -NewName "$Updates.'New Computer Name'" -Confirm
-            $BackUpUserList = Get-ChildItem -Path "\\wnis01\g$\BACKUP\$($Updates.'New Computer Name')"
-            $RenameUser = $BackUpUserList | Where-Object {$_.Name -eq "$($Updates.'Computer Name')"}
-            If ($RenameUser -match '\w') {
-                Rename-Item -Path "\\wnis01\g$\BACKUP\$($Updates.'New Computer Name')\$($Updates.'Computer Name')" -NewName "$Updates.'New Computer Name'" -Confirm
-            }
         }
 
         $uri = "https://$instance_name/api/now/table/alm_hardware/$recent_entry"
@@ -5062,7 +5053,7 @@ $($($other_entries_serials | Out-String).Trim())
             $errors_form.TopMost = $true
             $errors_confirm = $errors_form.ShowDialog()
             If ($errors_confirm -eq [System.Windows.Forms.DialogResult]::OK) {
-                $SNAM_Error_Path = "\\wnis01\ftp$\Tools\Resources\SNAM Records\SNAM Errors.csv"
+                $SNAM_Error_Path = "$PSScriptRoot\Files\SNAM Errors.csv"
                 $error.Clear()
                 $UserName = $((Get-WmiObject -Class win32_computersystem).UserName).Split("\")[1]
                 If ($error) {
