@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Portfolio" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/fa62c117c7.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>SNAM Hardware Updater</title>
+  </head>
+  <body class="light" id="top">
+    <header class="header center">
+      <h3>
+        <a
+        href="https://github.com/jdsearcy03/ServiceNow-Hardware-Updater"
+        aria-label="github"
+        class="link link--icon"
+      >
+        <i aria-hidden="true" class="fab fa-github"></i>
+      </a>
+      </h3>
+
+      <nav class="nav center">
+        <ul class="nav__list center">
+          <li class="nav__list-item">
+            <a class="link link--nav" href="#projects">Initialize</a>
+          </li>
+          <li class="nav__list-item">
+            <a class="link link--nav" href="#skills">Edit</a>
+          </li>
+          <li class="nav__list-item">
+            <a class="link link--nav" href="#contact">Finalize</a>
+          </li>
+        </ul>
+
+        <button type="button" aria-label="toggle theme" class="btn btn--icon">
+          <i aria-hidden="true" id="btn-theme" class="fas fa-moon"></i>
+        </button>
+
+        <button
+          type="button"
+          aria-label="toggle navigation"
+          class="btn btn--icon nav__hamburger"
+        >
+          <i aria-hidden="true" class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- About -->
+      <div class="about center">
+        <h1><span class="about__name">ServiceNow Hardware Updater</span></h1>
+        <p class="about__desc description">
+          This tool was developed to assist an IT team with updating ServiceNow hardware records. It streamlines the process by automatically retiring the old device and transferring the relevant information to the new device. It also provides a responsive and interactive interface to allow the tech to adjust the record as needed.
+        </p>
+      </div>
+
+      <!-- Initialize -->
+      <section id="projects">
+        <div class="section projects">
+          <h2 class="section__title">Initialize Tool</h2>
+          <p class="description">
+            To initialize the tool, first, enter your ServiceNow (itil role or higher) credentials.
+          </p>
+          <p class="description about__role">
+            Next, enter your ServiceNow instance name.
+          </p>
+          <p class="description about__role">
+            Finally, enter a Computer Name, Serial Number of Device to be Retired, and Serial Number of New Device that will be replacing the current one
+          </p>
+          <p></p>
+          <p class="about__role" align="center">
+            <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Beginning.gif?raw="true"' width="500" alt="Beginning">
+          </p>          
+        </div>
+      </section>
+
+            <!-- Edit -->
+            <section class="section skills" id="skills">
+                <h2 class="section__title">Edit Record Values</h2>
+                <p class="description">
+                  As-is, the application interface can be used to edit:
+                </p>
+                <p class="about__role"></p>
+                <ul class="skills__list">
+                  <li class="skills__list-item btn btn--plain">Computer Name</li>
+                  <li class="skills__list-item btn btn--plain">Function</li>
+                  <li class="skills__list-item btn btn--plain">Assigned To</li>
+                  <li class="skills__list-item btn btn--plain">Responsible Department</li>
+                  <li class="skills__list-item btn btn--plain">Parent Item</li>
+                  <li class="skills__list-item btn btn--plain">Location</li>
+                  <li class="skills__list-item btn btn--plain">Consumables</li>
+                  <li class="skills__list-item btn btn--plain">Comments</li>
+                </ul>
+                <p class="about__role"></p>
+                <p class="description">However, the application could also easily be changed to update any fields on any ServiceNow table!</p>
+                <p class="about__desc"></p>
+                <h3 class="section__title">Assigned To</h3>
+                <p class="description">
+                  Enter a Name, Part of a Name, or Series of Characters to query ServiceNow.
+                </p>
+                <p class="description about__role">
+                  The application queries the Users table and displays the results in a new window.
+                </p>
+                <p class="description about__role">
+                  Use the Search Bar to adjust your query as-needed.
+                </p>
+                <p class="description about__role">
+                  The Hardware Asset will be assigned to your selected User.
+                </p>
+                <p class="about__role" align="center">
+                  <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Assigned.gif?raw="true"' width="500" alt="Assigned To">
+                </p>
+                <p class="about__desc"></p>
+                <h3 class="section__title">Responsible Department</h3>
+                <p class="description">
+                  Enter a Department Name, Part of a Name, or Series of Characters to query ServiceNow.
+                </p>
+                <p class="description about__role">
+                  The application queries the Departments table and displays the results in a new window.
+                </p>
+                <p class="description about__role">
+                  Use the Search Bar to adjust your query as-needed.
+                </p>
+                <p class="description about__role">
+                  The Hardware Asset will be assigned to your selected Department.
+                </p>
+                <p class="about__role" align="center">
+                  <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Department.gif?raw="true"' width="500" alt="Department">
+                </p>
+                <p class="description">
+                  (Note: The Department Field is Read-Only and will auto-populate to match either the Assigned To or Responsible Department Field)
+                </p>
+                <p class="about__desc"></p>
+                <h3 class="section__title">Location</h3>
+                <p class="description">
+                  Enter a Location or Series of Characters to query ServiceNow.
+                </p>
+                <p class="description about__role">
+                  The application queries the Locations table and displays the results in a new window.
+                </p>
+                <p class="description about__role">
+                  Use the Search Bar to adjust your query as-needed.
+                </p>
+                <p class="description about__role">
+                  The Hardware Asset will be attached to your selected Location.
+                </p>
+                <p class="about__role" align="center">
+                  <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Location.gif?raw="true"' width="500" alt="Location">
+                </p>
+                <p class="about__desc"></p>
+                <h3 class="section__title">Consumables</h3>
+                <p class="description">
+                  When you click on the Consumables Field, a new dialog window will open.
+                </p>
+                <p class="description about__role">
+                  Use the search bar to query the ServiceNow Consumables table for matching entries.
+                </p> 
+                <p class="description about__role">
+                  Initially, the Results window displays any Consumables that are currently attached.
+                </p>
+                <p class="description about__role">
+                  To add a Consumable, choose a Consumable from the Results window and select "Add Item."
+                </p>
+                <p class="description about__role">
+                  To remove a Consumable, choose a Consumable from the Items to Add window and select "Remove Item."
+                </p>
+                <p class="description about__role">
+                  The final selections will be attached to the Hardware Asset.
+                </p>
+                <p class="about__role" align="center">
+                  <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Consumables.gif?raw="true"' width="500" alt="Consumables">
+                </p>
+            </section>
+
+      <!-- End -->
+      <section class="section contact center" id="contact">
+        <h2 class="section__title">Finalize Updates</h2>
+        <p class="description">
+          Once you're happy with your selections, click confirm to open a final dialog window.
+        </p>
+        <p class="description about__role">
+          This window gives you a final confirmation of the updates you will be sending to ServiceNow.
+        </p>
+        <p class="description about__role">
+          It also gives you the opportunity to write in a Comment if you choose.
+        </p>
+        <p class="about__role" align="center">
+          <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/End.gif?raw="true"' width="500" alt="End">
+        </p>
+        <p class="description about__role">
+          In addition to the changes that you manually selected from the dialog windows, the following changes are also made automatically without you even having to think about them!
+        </p>
+        <p class="about__role"></p>
+        <ul class="skills__list">
+          <li class="skills__list-item btn btn--plain">Inventoried By</li>
+          <li class="skills__list-item btn btn--plain">Inventory Date</li>
+          <li class="skills__list-item btn btn--plain">Assigned Date</li>
+          <li class="skills__list-item btn btn--plain">Installed Date</li>
+          <li class="skills__list-item btn btn--plain">Warranty Date</li>
+        </ul>
+        <p class="description about__role">
+          The last window displays the new Hardware Record as it exists after the changes were sent.
+        </p>
+        <p class="description about__role">
+          If you see any errors here, click the "Mark Errors" button to open a dialog window that will allow you to write a brief description of what went wrong.
+        </p>
+        <p class="description about__role">
+          (These errors are added to a log and can be addressed by a designated memeber of the team)
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+    </footer>
+
+    <div class="scroll-container">
+    <div class="scroll-top">
+      <a aria-label="Scroll up" href="#top">
+        <i aria-hidden="true" class="fas fa-arrow-up"></i>
+      </a>
+    </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

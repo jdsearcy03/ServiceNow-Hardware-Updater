@@ -1,5 +1,4 @@
-# ServiceNow-Hardware-Updator
-A tool developed to streamline the ServiceNow Hardware Asset record update process during device replacement at EOL
+This tool was developed to assist an IT team with updating ServiceNow hardware records. It streamlines the process by automatically retiring the old device and transferring the relevant information to the new device. It also provides a responsive and interactive interface to allow the tech to adjust the record as needed.
 
 <p align="center">
   <img src='https://github.com/jdsearcy03/ServiceNow-Hardware-Updater/blob/main/ReadMe%20Files/Beginning.gif?raw="true"' width="450" alt="Beginning">
