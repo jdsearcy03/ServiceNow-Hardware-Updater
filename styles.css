@@ -207,6 +207,12 @@ button {
   layout
 ========*/
 
+.image {
+  max-width: 100%;
+  height: auto;
+  width: auto\9;
+}
+
 .center {
   display: flex;
   align-items: center;
